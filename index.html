@@ -1,22 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
     <title>Movie App</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script src="script.js" defer></script>
+    <header class="container">
+      <div class="header_content">
+        <a href="index.html" class="header_logo">MovieApp</a>
+      </div>
+      <form>
+        <input type="text" class="header_search" placeholder="Search" />
+      </form>
+    </header>
     <div class="container">
-
+      <div class="movies">
+        <div class="movie">
+          <div class="movie_cover-inner">
+            <img
+              src="./lord.png"
+                class="movie_cover"/>
+                <div class="movie_cover--darkened"></div>
+               </div>
+               <div class="movie_info">
+                 <div class="movie_title">Mortal Combat</div>
+                 <div class="movie_category">Fantasy</div>
+                 <div class="movie_average movie_average--green">9</div>
+               </div>
+        </div>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>
