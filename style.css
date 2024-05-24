@@ -43,7 +43,7 @@ body{
 .movie{
     width:240px;
     margin: 10px;
-    position: relative;
+    position:relative;
 }
 .movie_cover-inner{
    position:relative;
