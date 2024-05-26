@@ -1,11 +1,12 @@
 const API_KEY = "9b07ab3a-b5b6-4699-9d16-f80f47e3af08";
 const API_URL_POPULAR = "https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1";
-const API_TOP_COMING = "https://kinopoiskapiunofficial.tech/api/v2.2/films/premieres?year=2024&month=MAY";
-const API_URL_CURRENT_PREMIRS = "https://kinopoiskapiunofficial.tech/api/v2.2/films/premieres?year=2024&month=MAY"
+const API_URL_CURRENT_PREMIRS = "https://kinopoiskapiunofficial.tech/api/v2.2/films/premieres?year=2024&month=MAY";
+
+
 
 
 getMovies(API_URL_POPULAR);
-currentPremiers( API_URL_CURRENT_PREMIRS);
+getPremiers(API_URL_CURRENT_PREMIRS);
 
 async function getMovies(url) {
     const resp = await fetch(url, {
@@ -15,7 +16,7 @@ async function getMovies(url) {
         },
     });
     const respData = await resp.json();
-    console.log(respData)
+    console.log("maindata",respData)
     showMovies(respData);  
 }
 function showMovies(data) {
@@ -42,4 +43,46 @@ function showMovies(data) {
 
     });
 }
+
+document.querySelector("#current_premiers").addEventListener("click",getPremiers(API_URL_CURRENT_PREMIRS));
+ async function getPremiers(url) {
+    const respPremier = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            "X-API-KEY": API_KEY,
+        },
+    });
+    const premierData = await respPremier.json();
+    console.log("premierdata",premierData );
+    showPremiers(premierData);
+     
+} 
+function showPremiers(data) {
+    const moviesEl = document.querySelector(".movies");
+    data.items.forEach((movie) => {
+        const movieEl = document.createElement("div");
+        movieEl.classList.add("movie");
+        movieEl.innerHTML = "";
+
+        movieEl.innerHTML = `
+            <div class="movie_cover-inner">
+              <img
+              src="${movie.posterUrlPreview}" 
+             class="movie_cover"
+             alt="${movie.nameRu}"
+             />
+              <div class="movie_cover--darkened"></div>
+             </div>
+             <div class="movie_info">
+               <div class="movie_title">${movie.nameRu}</div>
+               <div class="movie_category">${movie.genres.map(genre => `${genre.genre}`)}</div>
+           
+             </div>
+            `;
+        moviesEl.appendChild(movieEl);
+
+    });
+}
+
+
 
