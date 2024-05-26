@@ -7,10 +7,7 @@ body{
     background-color: #1a191f;
     font-family:"Open Sans",sans-serif;
 }
-.container{
-  max-width:1200px;
-  margin:0 auto;
- }
+
  header{
     display: flex;
     flex-direction: row;
@@ -35,10 +32,21 @@ body{
     border-radius: 5px;
     outline: none;
 }
+.menu{
+  display: flex;
+  
+}
+.menu a {
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  color: white;
+  
+}
 .movies{
-  display:flex;
-  flex-direction: wrap;
-  justify-content: space-around;
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-left: 150px;
 }
 .movie{
     width:240px;
