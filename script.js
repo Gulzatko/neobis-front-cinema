@@ -1,17 +1,67 @@
 const API_KEY = "9b07ab3a-b5b6-4699-9d16-f80f47e3af08";
+const items = 20;
 const API_URL_ALL =
-  "https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1";
+  "https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1&items=20";
 const API_URL_CURRENT_PREMIRS =
-  "https://kinopoiskapiunofficial.tech/api/v2.2/films/premieres?year=2024&month=MAY";
+  "https://kinopoiskapiunofficial.tech/api/v2.2/films/premieres?year=2024&month=MAY&items=20";
 
 const API_URL_COMING =
-  "https://kinopoiskapiunofficial.tech/api/v2.2/films?order=RATING&type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=1";
+  "https://kinopoiskapiunofficial.tech/api/v2.2/films?order=RATING&type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=1&items=20";
 const API_URL_TOP_BEST =
-  "https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1";
+  "https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1&items=20";
 
-const API_URL_DIGITAL = "https://kinopoiskapiunofficial.tech/api/v2.1/films/releases?year=2024&month=MAY&page=1";
- 
+const API_URL_DIGITAL = "https://kinopoiskapiunofficial.tech/api/v2.1/films/releases?year=2024&month=MAY&page=1&releases=5";
+
+ //fetching data for main page
 getMovies(API_URL_ALL);
+
+// fetching data for input value
+
+const form = document.querySelector('form');
+  form.addEventListener('submit',(e)=>{
+  e.preventDefault();
+  const moviesEl = document.querySelector(".movies");
+   moviesEl.innerHTML= "";
+ let movieValue = form.querySelector("input").value;
+   getInputMovies(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${movieValue}`);
+})
+async function getInputMovies(url) {
+  const resp = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": API_KEY,
+    },
+  });
+  const respData = await resp.json();
+  console.log("maindata", respData);
+  showInputMovies(respData);
+}
+function showInputMovies(data) {
+  const moviesEl = document.querySelector(".movies");
+  data.films.forEach((film) => {
+    const movieEl = document.createElement("div");
+    movieEl.classList.add("movie");
+    movieEl.innerHTML = `
+            <div class="movie_cover-inner">
+              <img
+              src="${film.posterUrlPreview}" 
+             class="movie_cover"
+             alt="${film.nameRu}"
+             />
+              <div class="movie_cover--darkened"></div>
+             </div>
+             <div class="movie_info">
+               <div class="movie_title">${film.nameRu}</div>
+               <div class="movie_category">${film.genres.map(
+                 (genre) => `${genre.genre}`
+               )}
+               </div>
+             </div>
+            `;
+    moviesEl.appendChild(movieEl);
+  });
+ 
+}
 
 let currentPremiers = document
   .querySelector("#current_premiers")
@@ -47,11 +97,11 @@ let comimg = document
     getDigitalMovies(API_URL_DIGITAL);
   });
 
-  function searchApi(){
-    document.querySelector(".header_search").addEventListener
-  }
+  
 
-async function getMovies(url) {
+ 
+
+ async function getMovies(url) {
   const resp = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
@@ -127,3 +177,6 @@ function showDigitMovies(data) {
   });
  
 }
+
+
+
