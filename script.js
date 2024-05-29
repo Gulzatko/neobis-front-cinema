@@ -3,7 +3,7 @@ const items = 20;
 const API_URL_ALL =
   "https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1&items=20";
 const API_URL_CURRENT_PREMIRS =
-  "https://kinopoiskapiunofficial.tech/api/v2.2/films/premieres?year=2024&month=MAY&items=20";
+  "https://kinopoiskapiunofficial.tech/api/v2.2/films/premieres?year=2024&month=MAY&page=1&items=20";
 
 const API_URL_COMING =
   "https://kinopoiskapiunofficial.tech/api/v2.2/films?order=RATING&type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=1&items=20";
@@ -23,7 +23,8 @@ const form = document.querySelector('form');
   const moviesEl = document.querySelector(".movies");
    moviesEl.innerHTML= "";
  let movieValue = form.querySelector("input").value;
-   getInputMovies(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${movieValue}`);
+   getInputMovies(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${movieValue}&page=1&films=5`);
+   form.querySelector("input").value = "";
 })
 async function getInputMovies(url) {
   const resp = await fetch(url, {
