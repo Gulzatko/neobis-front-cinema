@@ -42,7 +42,6 @@ async function getInputMovies(url) {
   console.log("maindata", respData);
   showInputMovies(respData);
 }
-
 function showInputMovies(data) {
   data.films.forEach((film) => {
     const movieEl = document.createElement("div");
@@ -195,46 +194,46 @@ function showDigitMovies(data) {
   });
 }
 
-async function selectFavorite(url) {
-  moviesEl.innerHTML = '';
-  try {
-       const resp = await fetch(url, {
-        method: "GET",
-        headers: {
-        "X-API-KEY": API_KEY,
-        "Content-Type": "application/json",
+// async function selectFavorite(url) {
+//   moviesEl.innerHTML = '';
+//   try {
+//        const resp = await fetch(url, {
+//         method: "GET",
+//         headers: {
+//         "X-API-KEY": API_KEY,
+//         "Content-Type": "application/json",
 
-      },
-    })
-    const respData = await resp.json();
-    console.log(respData);
+//       },
+//     })
+//     const respData = await resp.json();
+//     console.log(respData);
    
-    const selectedContainer = ` 
-        <div class="favorite-section">
-           <div id="movie" movieId=${respData.kinopiskId} class="movie-container">
-           <img class="test-img" src=${resp.posterUrl}/>
-          <div class="movie-info">
-           <div class="movie-info-top">
-            <h3 class="movie-rating">${respData.ratingImdb ? respData.ratingImdb:getRandomRating()}</h3>
-            <div class="heart heart-active" id="heart"></div>
-            </div>
-             <div class="movie-info-bottom">
-             <h4 class="movie-title">${respData.nameRu}</h4>
-              <h4 class="movie-genre">${respData.genres[0].genre}</h4>
-            <div>
-           </div>
+//     const selectedContainer = ` 
+//         <div class="favorite-section">
+//            <div id="movie" movieId=${respData.kinopiskId} class="movie-container">
+//            <img class="test-img" src=${resp.posterUrl}/>
+//           <div class="movie-info">
+//            <div class="movie-info-top">
+//             <h3 class="movie-rating">${respData.ratingImdb ? respData.ratingImdb:getRandomRating()}</h3>
+//             <div class="heart heart-active" id="heart"></div>
+//             </div>
+//              <div class="movie-info-bottom">
+//              <h4 class="movie-title">${respData.nameRu}</h4>
+//               <h4 class="movie-genre">${respData.genres[0].genre}</h4>
+//             <div>
+//            </div>
            
-        </div>
-    </div>
+//         </div>
+//     </div>
    
-  `
-  moviesEl.insertAdjacentHTML('beforeend', selectedContainer)
+//   `
+//   moviesEl.insertAdjacentHTML('beforeend', selectedContainer)
 
 
-  } catch(err){
-    console.log(err.message)
-  }
-}
+//   } catch(err){
+//     console.log(err.message)
+//   }
+// }
 // Change the color of heart
 
 moviesEl.addEventListener("click", (e)=>{
@@ -251,13 +250,15 @@ moviesEl.addEventListener("click", (e)=>{
    }
 
 })
-favoriteBtn.addEventListener("click",(e)=>{
+  favoriteBtn.addEventListener("click",(e)=>{
   e.preventDefault();
+  const favoriteFilms = JSON.parse(localStorage.getItem("favoriteFilms"))||[];
   moviesEl.innerHTML='';
-  moviesIdArray.forEach((id)=>{
-
-    selectFavorite(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}`)
-  })
-    console.log("favorites")
+  if(favoriteFilms.length>0){
+    showMovies({films:favoriteFilms})
+  } else{
+    alert("No favorite movies found")
+  }
+ 
 
 })
