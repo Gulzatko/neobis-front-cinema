@@ -45,7 +45,7 @@ async function getInputMovies(url) {
 function showInputMovies(data) {
   data.films.forEach((film) => {
     const movieEl = document.createElement("div");
-    movieEl.classList.add("movie");
+    movieEl.classList.add("inputMovie");
     movieEl.innerHTML = `
             <div class="movie_cover-inner">
                <img
@@ -58,7 +58,7 @@ function showInputMovies(data) {
                  <div class="movie_info">
                      <div class="info-top">
                         <h3 class="movie-rating"></h3> 
-                         <div  class="heart" id="heart"></div> 
+                         <div  class="heart" heart-data="${JSON.stringify(movie)}"  id="heart"></div> 
                    </div>
                  <div class="info-bottom">
                       <div class="movie_title">${film.nameRu}</div>
@@ -134,7 +134,7 @@ function showMovies(data) {
                  <div class="movie_info">
                      <div class="info-top">
                         <h3 class="movie-rating"></h3> 
-                         <div  class="heart" id="heart"></div> 
+                         <div  class="heart" heart-data="${JSON.stringify(movie)}" id="heart"></div> 
                    </div>
                  <div class="info-bottom">
                       <div class="movie_title">${movie.nameRu}</div>
@@ -178,7 +178,7 @@ function showDigitMovies(data) {
              <div class="movie_info">
              <div class="info-top">
              <h3 class="movie-rating"></h3> 
-              <div  class="heart" id="heart"></div> 
+              <div  class="heart" heart-data="${JSON.stringify(movie)}" id="heart"></div> 
               </div>
               <div class="info_bottom">
                <div class="movie_title">${movie.nameRu}</div>
@@ -194,71 +194,42 @@ function showDigitMovies(data) {
   });
 }
 
-// async function selectFavorite(url) {
-//   moviesEl.innerHTML = '';
-//   try {
-//        const resp = await fetch(url, {
-//         method: "GET",
-//         headers: {
-//         "X-API-KEY": API_KEY,
-//         "Content-Type": "application/json",
+// change heart
 
-//       },
-//     })
-//     const respData = await resp.json();
-//     console.log(respData);
-   
-//     const selectedContainer = ` 
-//         <div class="favorite-section">
-//            <div id="movie" movieId=${respData.kinopiskId} class="movie-container">
-//            <img class="test-img" src=${resp.posterUrl}/>
-//           <div class="movie-info">
-//            <div class="movie-info-top">
-//             <h3 class="movie-rating">${respData.ratingImdb ? respData.ratingImdb:getRandomRating()}</h3>
-//             <div class="heart heart-active" id="heart"></div>
-//             </div>
-//              <div class="movie-info-bottom">
-//              <h4 class="movie-title">${respData.nameRu}</h4>
-//               <h4 class="movie-genre">${respData.genres[0].genre}</h4>
-//             <div>
-//            </div>
-           
-//         </div>
-//     </div>
-   
-//   `
-//   moviesEl.insertAdjacentHTML('beforeend', selectedContainer)
-
-
-//   } catch(err){
-//     console.log(err.message)
-//   }
-// }
-// Change the color of heart
-
-moviesEl.addEventListener("click", (e)=>{
-   if(e.target.id= 'heart'){
+ moviesEl.addEventListener("click", (e)=>{
+   if(e.target.id='heart'){
     e.target.classList.toggle("heart-active");
-    const movieElement = e.target.closest('.movie-container')
+    const movieElement = e.target.closest('.movies')
     if(e.target.classList.contains("heart-active")){
-      moviesIdArray.push(movieElement.getAttribute("movieId"))
-      localStorage.setItem("id", JSON.stringify(moviesIdArray))
+       const heart = moviesEl.querySelector(".heart");
+       const movie = JSON.parse(heart);
+       heart.getAttribute('heart-data');
+       addFavoriteMovie(movie);
     } else{
-      moviesIdArray = moviesIdArray.filter(item =>item !==movieElement.getAttribute('movieId'))
-      localStorage.getItem('id', JSON.stringify(moviesIdArray))
+       alert("No selected movies");
     }
    }
 
 })
-  favoriteBtn.addEventListener("click",(e)=>{
+ favoriteBtn.addEventListener("click",(e)=>{
   e.preventDefault();
-  const favoriteFilms = JSON.parse(localStorage.getItem("favoriteFilms"))||[];
-  moviesEl.innerHTML='';
-  if(favoriteFilms.length>0){
-    showMovies({films:favoriteFilms})
-  } else{
-    alert("No favorite movies found")
-  }
+   addFavoriteMovie();
  
+ })
+function addFavoriteMovie(movie){
+  const favorites = getFavoriteMovies();
+  if(!favorites.some(favorite =>favorite.filmId ===movie.kinopoiskId)){
+    favorites.push(movie);
+    localStorage.setItem('favoriteMovies', JSON.stringify(favorites));
+  }
+}
+function getFavoriteMovies(){
+  return JSON.parse(localStorage.getItem('favoriteMovies'))|| [];
+}
+function showFavoriteMovies(){
+  const favorites = getFavoriteMovies();
+   showMovies(favorites);
 
-})
+   
+}
+ 
