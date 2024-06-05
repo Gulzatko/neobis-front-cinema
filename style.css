@@ -46,7 +46,7 @@ body{
 .movies{
   display:grid;
   grid-template-columns: 1fr 1fr 1fr;
-  margin-left: 150px;
+
 }
 .movie{
     width:240px;
@@ -54,6 +54,7 @@ body{
     margin: 10px;
     position:relative;
     color:white;
+    border-radius:50%;
 }
 .movie_cover-inner{
    position:relative;
@@ -122,10 +123,10 @@ body{
 .movie_average--green{
   border:1px solid green;
 }
-.movie_average--orange{
+.movie_orange{
     border:1px solid orange; 
 }
-.movie_average--red{
+.movie_red{
     border:1px solid red;
 }
 .heart{
@@ -139,7 +140,9 @@ body{
    border-image: radial-gradient(rgb(255, 255, 255)69%, #0000 0%) 84.5%/50%;
    clip-path: polygon(-41% 0, 50% 91%, 141% 0);
    transition: all 0.5s ease-in-out;
+   z-index:10;
 }
 .heart-active{
-  border-image: radial-gradient(rgb(255,20,20)69%,#0000 0%)84.5%/50%;
+ border-image: radial-gradient(rgb(255,20,20)69%,#0000 0%)84.5%/50%;
+   
 }
