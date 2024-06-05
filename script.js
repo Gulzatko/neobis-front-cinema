@@ -75,7 +75,7 @@ async function getMovies(url) {
    showMovies({ data: respData, isLocaleStorage: false });
 }
 function showMovies({ data, isLocaleStorage }) {
-   let getData = isLocaleStorage ? data : data.items;
+   let getData = isLocaleStorage ? data : data.items||data.films||data.releases;
    console.log(getData);
    getData.forEach((movie) => {
       const movieEl = document.createElement("div");
