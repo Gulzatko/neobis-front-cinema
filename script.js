@@ -56,11 +56,15 @@ document.querySelector("#digital-releases").addEventListener("click", (e) => {
       `https://kinopoiskapiunofficial.tech/api/v2.1/films/releases?year=2024&month=MAY&page=1&releases=5`
    );
 });
-favoriteBtn.addEventListener("click", () => {
-   showFavorites();
+favoriteBtn.addEventListener("click", (e) => {
+   e.preventDefault();
+   moviesEl.innerHTML = "";
+   const favoritesData = JSON.parse(localStorage.getItem("favorites"));
+   showMovies({ data: favoritesData, isLocaleStorage: true });
 });
 async function getMovies(url) {
    const resp = await fetch(url, {
+      method: "GET",
       headers: {
          "Content-Type": "application/json",
          "X-API-KEY": API_KEY,
@@ -68,22 +72,23 @@ async function getMovies(url) {
    });
    const respData = await resp.json();
    console.log("maindata", respData);
-   showMovies(respData);
+   showMovies({ data: respData, isLocaleStorage: false });
 }
-function showMovies(data) {
-   let getData = data.items || data.films || data.releases;
+function showMovies({ data, isLocaleStorage }) {
+   let getData = isLocaleStorage ? data : data.items;
+   console.log(getData);
    getData.forEach((movie) => {
       const movieEl = document.createElement("div");
       movieEl.classList.add("movie");
       movieEl.innerHTML = `
-      <div class="movie_cover-inner">
+      <div class="movie_cover-inner" >
         <img
           src="${movie.posterUrlPreview}"
           class="movie_cover"
           alt="${movie.nameRu}"
-        />
-        <div class="movie_cover--darkened"></div>
-        <div class="movie_info">
+         />
+         <div class="movie_cover--darkened"></div>
+         <div class="movie_info">
           <div class="info-top">
             <h3 class="movie-rating">${getRandomRating()}</h3>
             <div class="heart ${isFavorite(movie.kinopoiskId) ? "heart-active" : ""}" data-id="${
@@ -101,6 +106,8 @@ function showMovies(data) {
     `;
       moviesEl.appendChild(movieEl);
    });
+   
+  
    document.querySelectorAll(".heart").forEach((heart) => {
       heart.addEventListener("click", (e) => {
          const movie = JSON.parse(e.target.getAttribute("data-movie"));
@@ -125,4 +132,3 @@ function toggleFavorite(movie) {
    }
    localStorage.setItem("favorites", JSON.stringify(favorites));
 }
- 
